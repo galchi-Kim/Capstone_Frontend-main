@@ -28,7 +28,7 @@ const instMain = ({ navigation }) => {
     const { userName, userRole, userImg } = user || {
         userName: '김강사',
         userRole: '강사',
-        userImg: 'http://10.32.10.126:3000/img/person1.png',
+        userImg: 'http://10.32.10.30:3000/img/person1.png',
     };
 
     const [counts, setCounts] = useState({

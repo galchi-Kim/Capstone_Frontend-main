@@ -1,15 +1,27 @@
-import React, { useLayoutEffect } from 'react';
+import React from 'react';
 import { StatusBar, FlatList } from 'react-native';
-import { StyledFormArea, ClassButton, ClassContainer, ClassButtonText, GridWrapper, ClassScreenContainer } from './../components/styles'; 
+import {
+    StyledFormArea,
+    ClassButton,
+    ClassContainer,
+    ClassButtonText,
+    GridWrapper,
+    ClassScreenContainer
+} from './../components/styles';
+import { useRoute, useNavigation } from '@react-navigation/native';
 
 const classData = [
     { id: '1', title: '초보자', screen: 'Beginner' },
     { id: '2', title: '중급자', screen: 'Intermediate' },
     { id: '3', title: '전문가', screen: 'Expert' },
     { id: '4', title: '자격증', screen: 'Certification' }
+
 ];
 
-const Classlist = ({ navigation }) => {
+const Classlist = () => {
+    const navigation = useNavigation();
+    const route = useRoute();
+    const { place } = route.params;
 
     // // 뒤로가기 버튼 숨기기
     // useLayoutEffect(() => {
@@ -26,13 +38,20 @@ const Classlist = ({ navigation }) => {
                     <FlatList
                         data={classData}
                         renderItem={({ item }) => (
-                            <ClassButton onPress={() => navigation.navigate(item.screen)}>
+                            <ClassButton
+                                onPress={() =>
+                                    navigation.navigate(item.screen, {
+                                        place: place,
+                                        level: item.title
+                                    })
+                                }
+                            >
                                 <ClassButtonText>{item.title}</ClassButtonText>
                             </ClassButton>
                         )}
                         keyExtractor={item => item.id}
                         numColumns={2}
-                        columnWrapperStyle={GridWrapper} 
+                        columnWrapperStyle={GridWrapper}
                     />
                 </StyledFormArea>
             </ClassContainer>

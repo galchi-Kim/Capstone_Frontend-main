@@ -76,7 +76,7 @@ const Signup = ({ navigation }) => {
                                 return;
                             }
                             axios
-                                .post('http://10.0.2.2:5000/api/signup', {
+                                .post('http://10.32.10.30:3000/api/signup', {
                                     userName: values.userName,
                                     userEmail: values.email,
                                     userPw: values.password,

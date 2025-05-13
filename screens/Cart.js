@@ -13,7 +13,7 @@ const Cart = () => {
     
     useEffect(() => {
         if (!userId) return;
-        axios.get(`http://10.0.2.2:5000/api/cart/${userId}`)
+        axios.get(`http://10.32.10.30:3000/api/cart/${userId}`)
             .then(res => setCartItems(res.data))
             .catch(err => console.error('장바구니 불러오기 실패:', err));
     }, [userId]);
@@ -36,7 +36,7 @@ const Cart = () => {
     };
 
     const removeItem = (cartId) => {
-        axios.delete(`http://10.0.2.2:5000/api/cart/${cartId}`)
+        axios.delete(`http://10.32.10.30:3000/api/cart/${cartId}`)
             .then(() => {
                 setCartItems(prev => prev.filter(item => item.cartId !== cartId));
                 setSelectedItems(prev => prev.filter(id => id !== cartId));
@@ -67,7 +67,7 @@ const Cart = () => {
 
             {/* 썸네일 이미지 */}
             <Image
-                source={{ uri: `http://10.0.2.2:5000/img/${item.lesThumbImg}` }}
+                source={{ uri: `http://10.32.10.30:3000/img/${item.lesThumbImg}` }}
                 style={{ width: 80, height: 70, borderRadius: 10 }}
             />
         </styles.CartItemContainer>

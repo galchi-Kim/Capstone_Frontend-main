@@ -1,43 +1,42 @@
-import React from 'react';
-import { StatusBar, View } from 'react-native'; 
+import React, { useEffect } from 'react';
+import { View, Text, Image, TouchableOpacity, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import styles from '../components/styles';
 
-import {  
-    StyledContainer,
-    InnerContainer,
-    PageTitle,
-    SubTitle,
-    StyledFormArea,
-    StyledButton,
-    ButtonText,
-    LogoutButton,
-} from './../components/styles'; 
+const Welcome = ({ route }) => {
+    const navigation = useNavigation();
+    const { userName, userRole, userImg } = route.params || {};
 
+    useEffect(() => {
+        if (!userName || !userRole || !userImg) {
+            Alert.alert('오류', '사용자 정보가 올바르지 않습니다.');
+        }
+    }, []);
 
-const Welcome = ({ navigation, route }) => {
-    const { userName, userEmail, userRole, userImg } = route.params || {};
-    
+    const handleAddLocation = () => {
+        navigation.navigate('SelectAddress', {
+            userName,
+            userRole,
+            userImg
+        });
+    };
+
     return (
-        <StyledContainer>
-            <StatusBar barStyle="dark-content" />
-            <InnerContainer>
-                <PageTitle>환영합니다!</PageTitle>
-                <SubTitle>{userName} 님</SubTitle>
-                <SubTitle>{userEmail}</SubTitle>
+        <View style={styles.container}>
+            <Text style={styles.title}>{userName}님, 환영합니다</Text>
+            <Text style={styles.subtitle}>{userRole === '강사' ? '강사 전용 홈' : '수강생 전용 홈'}</Text>
 
-                <StyledFormArea>
-                    <LogoutButton onPress={() => navigation.replace("Login")}>
-                        <ButtonText>{'로그아웃'}</ButtonText> 
-                    </LogoutButton>
+            <Image
+                source={{ uri: userImg }}
+                style={styles.profileImage}
+            />
 
-                    <View style={{ height: 20 }} />
-                    <StyledButton onPress={() => navigation.navigate("TabNavigator", {
-                        screen: "Class",
-                        })}>
-                        <ButtonText>{'클래스 선택하기'}</ButtonText> 
-                    </StyledButton>
-                </StyledFormArea>
-            </InnerContainer>
-        </StyledContainer>
+            {userRole === '수강생' && (
+                <TouchableOpacity style={styles.addLocationButton} onPress={handleAddLocation}>
+                    <Text style={styles.addLocationText}>위치 추가</Text>
+                </TouchableOpacity>
+            )}
+        </View>
     );
 };
 

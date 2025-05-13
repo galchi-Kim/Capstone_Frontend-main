@@ -45,7 +45,7 @@ const Logininst = ({ navigation }) => {
                     <Formik
                         initialValues={{ email: "", password: "" }}
                         onSubmit={(values) => {
-                            axios.post('http://10.0.2.2:5000/api/login', {
+                            axios.post('http://10.32.10.30:3000/api/login', {
                                 userEmail: values.email,
                                 userPw: values.password
                             })

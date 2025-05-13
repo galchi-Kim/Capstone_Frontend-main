@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { FlatList, TextInput, ScrollView, TouchableOpacity, View, Text, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import {
     BeginnerScreenContainer,
     PageTitle
@@ -9,20 +9,28 @@ import axios from 'axios';
 
 const Beginner = () => {
     const navigation = useNavigation();
+    const route = useRoute();
+    const { place, level } = route.params;
+
     const [allLessons, setAllLessons] = useState([]);
     const [searchText, setSearchText] = useState('');
     const [placeFilter, setPlaceFilter] = useState([]);
     const flatListRef = useRef(null);
 
-    // 레슨 불러오기
+    // ✅ 레슨 불러오기: place, level 기준으로 요청
     useEffect(() => {
-        axios.get('http://10.0.2.2:5000/api/lessons')
-            .then(res => {
-                setAllLessons(res.data);
-            })
-            .catch(err => {
-                console.error('레슨 조회 실패:', err);
-            });
+        axios.get('http://10.32.10.30:3000/api/lessons', {
+            params: {
+                lesPlace: place,
+                lesLevel: level
+            }
+        })
+        .then(res => {
+            setAllLessons(res.data);
+        })
+        .catch(err => {
+            console.error('레슨 조회 실패:', err);
+        });
     }, []);
 
     // 지역 필터 
@@ -38,9 +46,6 @@ const Beginner = () => {
         lesson.instName.trim().includes(searchText.trim())) &&
         (placeFilter.length === 0 || placeFilter.includes(lesson.lesPlace.trim()))
     );
-    
-    
-    
 
     return (
         <BeginnerScreenContainer>
@@ -88,8 +93,7 @@ const Beginner = () => {
                 renderItem={({ item }) => (
                     <TouchableOpacity onPress={() => navigation.navigate('LessonDetail', { lesson: item })}>
                         <View style={{ flexDirection: 'row', padding: 15, borderBottomWidth: 1, alignItems: 'center' }}>
-                        <Image source={{ uri: `http://10.0.2.2:5000/img/${item.lesThumbImg}` }} style={{ width: 80, height: 70, marginRight: 20, borderRadius: 10 }}/>
-
+                            <Image source={{ uri: `http://10.32.10.30:3000/img/${item.lesThumbImg}` }} style={{ width: 80, height: 70, marginRight: 20, borderRadius: 10 }}/>
                             <View style={{ flex: 1 }}>
                                 <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{item.lesName}</Text>
                                 <Text>⭐ {item.rating}</Text>
