@@ -108,7 +108,7 @@ const InstMain = ({ navigation }) => {
 
                 {/* 프로필 편집, 레슨 편집 */}
                 <Row style={{ justifyContent: 'space-around', marginTop: 10 }}>
-                    <TextButton onPress={() => navigation.navigate('fileEdit')}>
+                    <TextButton onPress={() => navigation.navigate('instProfileEdit')}>
                         <TextButtonText>프로필 편집</TextButtonText>
                     </TextButton>
                     <TextButton onPress={() => navigation.navigate('LessonManage')}>
